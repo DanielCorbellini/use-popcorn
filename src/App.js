@@ -1,5 +1,13 @@
-import { NavBar } from "./navbar/NavBar";
+import { useState } from "react";
 import { Main } from "./main/Main";
+import { NavBar } from "./navbar/NavBar";
+
+import { Box } from "./main/box/Box.js";
+import { MovieList } from "./main/box/MovieList.js";
+import { WatchedMovieList } from "./main/box/WatchedMovieList.js";
+import { WatchedSummary } from "./main/box/WatchedSummary.js";
+import { NumResults } from "./navbar/NumResults";
+import { Search } from "./navbar/Search";
 
 export const tempMovieData = [
   {
@@ -52,10 +60,26 @@ export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function App() {
+  const [movies, setMovies] = useState(tempMovieData);
+  const [watched, setWatched] = useState(tempWatchedData);
+
   return (
     <>
-      <NavBar />
-      <Main />
+      <NavBar>
+        <Search />
+        <NumResults movies={movies} />
+      </NavBar>
+
+      <Main>
+        <Box>
+          <MovieList movies={movies} />
+        </Box>
+
+        <Box>
+          <WatchedSummary watched={watched} />
+          <WatchedMovieList watched={watched} />
+        </Box>
+      </Main>
     </>
   );
 }
