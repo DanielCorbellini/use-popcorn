@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Main } from "./main/Main";
 import { NavBar } from "./navbar/NavBar";
 
@@ -65,10 +65,18 @@ const KEY = process.env.REACT_APP_API_KEY;
 function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
+  const query = "Avengers";
 
-  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=Avengers`)
-    .then((res) => res.json())
-    .then((data) => "");
+  useEffect(function () {
+    async function fetchMovies() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+    }
+    fetchMovies();
+  }, []);
 
   return (
     <>
