@@ -161,6 +161,7 @@ body {
 .list.list-movies li {
   cursor: pointer;
   transition: all 0.3s;
+  width: 100%;
 }
 
 .list.list-movies li:hover {

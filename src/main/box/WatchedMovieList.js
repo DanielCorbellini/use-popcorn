@@ -1,31 +1,44 @@
-export function WatchedMovieList({ watched }) {
+export function WatchedMovieList({ watched, onSelectMovie, onDeleteWatched }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} key={movie.imdbID} />
+        <WatchedMovie
+          movie={movie}
+          key={movie.imdbID}
+          onSelectMovie={onSelectMovie}
+          onDeleteWatched={onDeleteWatched}
+        />
       ))}
     </ul>
   );
 }
-function WatchedMovie({ movie }) {
+function WatchedMovie({ movie, onSelectMovie, onDeleteWatched }) {
   return (
-    <li>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
-      <div>
-        <p>
-          <span>⭐️</span>
-          <span>{movie.imdbRating}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{movie.userRating}</span>
-        </p>
-        <p>
-          <span>⏳</span>
-          <span>{movie.runtime} min</span>
-        </p>
-      </div>
-    </li>
+    <div>
+      <li onClick={() => onSelectMovie(movie.imdbID)}>
+        <img src={movie.poster} alt={`${movie.title} poster`} />
+        <h3>{movie.title}</h3>
+        <div>
+          <p>
+            <span>⭐️</span>
+            <span>{movie.imdbRating}</span>
+          </p>
+          <p>
+            <span>🌟</span>
+            <span>{movie.userRating}</span>
+          </p>
+          <p>
+            <span>⏳</span>
+            <span>{movie.runtime} min</span>
+          </p>
+        </div>
+      </li>
+      <button
+        className="btn-delete"
+        onClick={() => onDeleteWatched(movie.imdbID)}
+      >
+        X
+      </button>
+    </div>
   );
 }

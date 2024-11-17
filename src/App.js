@@ -10,6 +10,7 @@ import { NumResults } from "./navbar/NumResults";
 import { Search } from "./navbar/Search";
 import { Loader } from "./components/Loader.js";
 import { ErrorMessage } from "./components/ErrorMessage.js";
+import { SelectedMovie } from "./main/box/SelectedMovie.js";
 
 export const tempMovieData = [
   {
@@ -70,6 +71,29 @@ function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+
+  function handleSelectMovie(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
+
+  function handleAddWatch(movie) {
+    setWatched((watched) =>
+      watched.some((item) => item.imdbID === movie.imdbID)
+        ? watched.map((item) =>
+            item.imdbID === movie.imdbID ? { ...item, ...movie } : item
+          )
+        : [...watched, movie]
+    );
+  }
+
+  function handleDeleteWatched(id) {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  }
 
   useEffect(
     function () {
@@ -119,13 +143,30 @@ function App() {
       <Main>
         <Box>
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
           {error && <ErrorMessage message={error} />}
         </Box>
 
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
+          {selectedId ? (
+            <SelectedMovie
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatch}
+              watched={watched}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMovieList
+                watched={watched}
+                onSelectMovie={handleSelectMovie}
+                onDeleteWatched={handleDeleteWatched}
+              />
+            </>
+          )}
         </Box>
       </Main>
     </>
