@@ -18,8 +18,6 @@ export function SelectedMovie({
     (movie) => movie.imdbID === selectedId
   )?.userRating;
 
-  console.log(watchedUserRating);
-
   const {
     Title: title,
     Year: year,
@@ -62,6 +60,19 @@ export function SelectedMovie({
     },
     [selectedId]
   );
+
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+
+      return function () {
+        document.title = "UsePopcorn";
+      };
+    },
+    [title]
+  );
+
   return (
     <div className="details">
       {isLoading ? (
@@ -88,16 +99,22 @@ export function SelectedMovie({
 
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={26.25}
-                onSetRating={setUserRating}
-                defaultRating={watchedUserRating}
-              />
-              {userRating > 0 && (
-                <button className="btn-add" onClick={handleAdd}>
-                  +Add to list
-                </button>
+              {!watchedUserRating ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={26.25}
+                    onSetRating={setUserRating}
+                    defaultRating={watchedUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      +Add to list
+                    </button>
+                  )}{" "}
+                </>
+              ) : (
+                <p> You rated this movie with {watchedUserRating} ⭐</p>
               )}
             </div>
             <p>
