@@ -1,5 +1,5 @@
 # Getting Started with Create React App
-
+This is just a simple project from the course: [The Ultimate React Course 2024: React, Next.js, Redux & More](https://www.udemy.com/course/the-ultimate-react-course/?couponCode=KEEPLEARNINGBR) to learn React. \
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
